@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Memories in Motion 🎄</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+    <style>
+        /* ============================================
+           RESET & BASE
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0a0a1a;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden;
+            transition: background 1.2s ease;
+            position: relative;
+        }
+
+        /* ============================================
+           BACKGROUND EFFECT
+           ============================================ */
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ============================================
+           PARTICLES (BINTANG BERJATUHAN)
+           ============================================ */
+        #particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 8px;
+            animation: particleFall linear infinite;
+        }
+
+        @keyframes particleFall {
+            0% {
+                transform: translateY(-10vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(110vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* ============================================
+           CONTAINER
+           ============================================ */
+        .container {
+            max-width: 420px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ============================================
+           HEADER
+           ============================================ */
+        header {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            background: linear-gradient(135deg, #fff 0%, #a29bfe 50%, #fd79a8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header p {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.8rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        /* ============================================
+           SLIDER - KAYAK INSTAGRAM STORIES
+           ============================================ */
+        .slider-container {
+            position: relative;
+            height: 560px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            background: #000;
+        }
+
+        /* ============================================
+           SLIDE / CARD
+           ============================================ */
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transform: scale(1.05);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 30px 25px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: all;
+        }
+
+        /* ============================================
+           GRADIENT OVERLAY DI BAWAH FOTO
+           ============================================ */
+        .slide::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
+            border-radius: 20px;
+            pointer-events: none;
+        }
+
+        /* ============================================
+           SLIDE CONTENT
+           ============================================ */
+        .slide-content {
+            position: relative;
+            z-index: 2;
+            text-align: left;
+        }
+
+        .slide-content .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .slide-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            margin-bottom: 2px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .slide-content .artist {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+
+        .slide-content .caption {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 300;
+            font-style: italic;
+            margin-bottom: 12px;
+            max-width: 80%;
+        }
+
+        /* ============================================
+           AUDIO PLAYER (MINIMALIS)
+           ============================================ */
+        .audio-wrapper {
+            width: 100%;
+            margin: 6px 0 10px 0;
+        }
+
+        .audio-wrapper audio {
+            width: 100%;
+            height: 38px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .audio-wrapper audio::-webkit-media-controls-panel {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .audio-wrapper audio::-webkit-media-controls-current-time-display,
+        .audio-wrapper audio::-webkit-media-controls-time-remaining-display {
+            color: #fff;
+        }
+
+        /* ============================================
+           STORY BUTTON
+           ============================================ */
+        .story-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 300;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Poppins', sans-serif;
+            width: fit-content;
+        }
+
+        .story-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* ============================================
+           PROGRESS BAR (KAYAK STORIES)
+           ============================================ */
+        .progress-bars {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            display: flex;
+            gap: 6px;
+            z-index: 5;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar .fill {
+            height: 100%;
+            width: 0%;
+            background: #fff;
+            border-radius: 4px;
+            transition: width 0.1s linear;
+        }
+
+        .progress-bar.active .fill {
+            animation: progressFill 6s linear forwards;
+        }
+
+        @keyframes progressFill {
+            from {
+                width: 0%;
+            }
+            to {
+                width: 100%;
+            }
+        }
+
+        /* ============================================
+           NAVIGASI (PANAH & DOTS)
+           ============================================ */
+        .navigation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #fff;
+            padding: 10px 14px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: scale(1.05);
+        }
+
+        .nav-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            cursor: pointer;
+            transition: all 0.4s;
+        }
+
+        .dot.active {
+            background: #fff;
+            width: 24px;
+            border-radius: 6px;
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        footer {
+            margin-top: 14px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.15);
+            font-size: 0.6rem;
+            letter-spacing: 1px;
+        }
+
+        footer .heart {
+            color: #ff6b6b;
+            animation: heartBeat 1.5s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes heartBeat {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            15% {
+                transform: scale(1.3);
+            }
+            30% {
+                transform: scale(1);
+            }
+            45% {
+                transform: scale(1.15);
+            }
+            60% {
+                transform: scale(1);
+            }
+        }
+
+        /* ============================================
+           MODAL CERITA
+           ============================================ */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(15px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.show {
+            display: flex;
+            animation: modalFadeIn 0.4s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-content {
+            background: rgba(20, 20, 40, 0.95);
+            padding: 30px 25px;
+            border-radius: 20px;
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.3);
+            transition: 0.3s;
+        }
+
+        .modal-close:hover {
+            color: #fff;
+            transform: rotate(90deg);
+        }
+
+        .modal-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #fff, #a29bfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .modal-content p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 500px) {
+            .slider-container {
+                height: 500px;
+            }
+
+            header h1 {
+                font-size: 1.6rem;
+            }
+
+            .slide-content h2 {
+                font-size: 1.3rem;
+            }
+
+            .slide {
+                padding: 20px 18px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .slider-container {
+                height: 460px;
+            }
+
+            .slide-content h2 {
+                font-size: 1.1rem;
+            }
+
+            .slide-content .caption {
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== BACKGROUND ===== -->
+    <div class="bg-overlay"></div>
+    <div id="particles-container"></div>
+
+    <!-- ===== MAIN CONTAINER ===== -->
+    <div class="container">
+
+        <!-- HEADER -->
+        <header>
+            <h1>✨ Memories in Motion</h1>
+            <p>Geser untuk melihat momen</p>
+        </header>
+
+        <!-- SLIDER -->
+        <div class="slider-container" id="slider">
+
+            <!-- PROGRESS BARS -->
+            <div class="progress-bars">
+                <div class="progress-bar active" id="progress0"><div class="fill"></div></div>
+                <div class="progress-bar" id="progress1"><div class="fill"></div></div>
+                <div class="progress-bar" id="progress2"><div class="fill"></div></div>
+                <div class="progress-bar" id="progress3"><div class="fill"></div></div>
+            </div>
+
+            <!-- ==========================================
+            SLIDE 1: GANTI SESUAI KENANGANMU
+            ========================================== -->
+            <div class="slide active" id="slide0" style="background-image: url('https://images.unsplash.com/photo-1512389142860-9c449e58a714?w=600&h=800&fit=crop');">
+                <div class="slide-content">
+                    <span class="badge">🎄 Momen Spesial</span>
+                    <h2>Merry Christmas, I Miss You</h2>
+                    <p class="artist">Alex Crichton</p>
+                    <p class="caption">"Malam Natal yang sepi, tapi penuh kenangan."</p>
+                    <div class="audio-wrapper">
+                        <audio controls>
+                            <source src="assets/merry-christmas.mp3" type="audio/mpeg" />
+                        </audio>
+                    </div>
+                    <button class="story-btn" onclick="showStory(0)">
+                        📖 Cerita di Balik Momen
+                    </button>
+                </div>
+            </div>
+
+            <!-- ==========================================
+            SLIDE 2: GANTI SESUAI KENANGANMU
+            ========================================== -->
+            <div class="slide" id="slide1" style="background-image: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&h=800&fit=crop');">
+                <div class="slide-content">
+                    <span class="badge">🏠 Perjalanan</span>
+                    <h2>Rumah ke Rumah</h2>
+                    <p class="artist">Hindia</p>
+                    <p class="caption">"Perjalanan pulang yang hangat bersama teman."</p>
+                    <div class="audio-wrapper">
+                        <audio controls>
+                            <source src="assets/rumah-ke-rumah.mp3" type="audio/mpeg" />
+                        </audio>
+                    </div>
+                    <button class="story-btn" onclick="showStory(1)">
+                        📖 Cerita di Balik Momen
+                    </button>
+                </div>
+            </div>
+
+            <!-- ==========================================
+            SLIDE 3: GANTI SESUAI KENANGANMU
+            ========================================== -->
+            <div class="slide" id="slide2" style="background-image: url('https://images.unsplash.com/photo-1501696461415-6bd6660c6742?w=600&h=800&fit=crop');">
+                <div class="slide-content">
+                    <span class="badge">🌧️ Kenangan</span>
+                    <h2>Pupus</h2>
+                    <p class="artist">Dewa 19</p>
+                    <p class="caption">"Hujan dan kenangan yang tak pernah usai."</p>
+                    <div class="audio-wrapper">
+                        <audio controls>
+                            <source src="assets/pupus.mp3" type="audio/mpeg" />
+                        </audio>
+                    </div>
+                    <button class="story-btn" onclick="showStory(2)">
+                        📖 Cerita di Balik Momen
+                    </button>
+                </div>
+            </div>
+
+            <!-- ==========================================
+            SLIDE 4: GANTI SESUAI KENANGANMU
+            ========================================== -->
+            <div class="slide" id="slide3" style="background-image: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?w=600&h=800&fit=crop');">
+                <div class="slide-content">
+                    <span class="badge">💫 Kenangan</span>
+                    <h2>Kenangan Indah</h2>
+                    <p class="artist">—</p>
+                    <p class="caption">"Semua momen ini adalah bagian dari cerita kita."</p>
+                    <div class="audio-wrapper">
+                        <audio controls>
+                            <source src="assets/kenangan.mp3" type="audio/mpeg" />
+                        </audio>
+                    </div>
+                    <button class="story-btn" onclick="showStory(3)">
+                        📖 Cerita di Balik Momen
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- NAVIGASI -->
+        <div class="navigation">
+            <button class="nav-btn" onclick="prevSlide()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M15 18l-6-6 6-6"/>
+                </svg>
+            </button>
+            <div class="dots">
+                <span class="dot active" onclick="goToSlide(0)"></span>
+                <span class="dot" onclick="goToSlide(1)"></span>
+                <span class="dot" onclick="goToSlide(2)"></span>
+                <span class="dot" onclick="goToSlide(3)"></span>
+            </div>
+            <button class="nav-btn" onclick="nextSlide()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 18l6-6-6-6"/>
+                </svg>
+            </button>
+        </div>
+
+        <footer>
+            <p>Made with <span class="heart">❤️</span> &bull; 4 Momen Spesial</p>
+        </footer>
+
+    </div>
+
+    <!-- ===== MODAL CERITA ===== -->
+    <div class="modal" id="storyModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeStory()">&times;</span>
+            <h2 id="modalTitle">Cerita</h2>
+            <p id="modalText">Loading...</p>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // DATA CERITA - GANTI SESUAI KENANGANMU
+        // ============================================
+        const storyData = [{
+            title: '🎄 Malam Natal yang Sepi',
+            text: 'Malam itu aku sendirian di kosan. Lagu ini tiba-tiba muncul di rekomendasi Spotify. Liriknya "Merry Christmas, I miss you" langsung bikin aku teringat seseorang yang jauh di sana. Aku memutar lagu ini berulang-ulang sambil menatap hujan di luar jendela.'
+        }, {
+            title: '🏠 Perjalanan Pulang',
+            text: 'Lagu ini selalu menemani perjalanan pulang naik motor bersama teman-teman. Angin malam yang sejuk, canda tawa, dan lagu ini yang mengalun pelan. Momen sederhana yang terasa begitu hangat dan tak terlupakan.'
+        }, {
+            title: '🌧️ Hujan dan Kenangan',
+            text: 'Setiap kali hujan turun, lagu ini selalu terngiang. Ada kenangan tentang cinta pertama yang berakhir di musim hujan. Tapi anehnya, lagu ini justru membuatku tersenyum, karena semua kenangan itu indah pada waktunya.'
+        }, {
+            title: '💫 Semua Momen Indah',
+            text: 'Setiap momen punya ceritanya sendiri. Entah itu kebahagiaan, kerinduan, atau kesedihan. Semua lagu-lagu ini menjadi soundtrack perjalanan hidup. Dan kamu? Lagu apa yang jadi soundtrack momenmu?'
+        }];
+
+        // ============================================
+        // STATE
+        // ============================================
+        let currentIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+        const progressBars = document.querySelectorAll('.progress-bar');
+        let autoSlideInterval;
+        let progressInterval;
+
+        // ============================================
+        // NAVIGASI
+        // ============================================
+        function goToSlide(index) {
+            // Reset semua
+            slides.forEach(s => s.classList.remove('active'));
+            dots.forEach(d => d.classList.remove('active'));
+            progressBars.forEach(p => p.classList.remove('active'));
+
+            // Aktifkan yang dipilih
+            slides[index].classList.add('active');
+            dots[index].classList.add('active');
+            progressBars[index].classList.add('active');
+
+            // Reset progress animation
+            const fill = progressBars[index].querySelector('.fill');
+            fill.style.animation = 'none';
+            setTimeout(() => {
+                fill.style.animation = 'progressFill 6s linear forwards';
+            }, 10);
+
+            currentIndex = index;
+            resetAutoSlide();
+        }
+
+        function nextSlide() {
+            const next = (currentIndex + 1) % slides.length;
+            goToSlide(next);
+        }
+
+        function prevSlide() {
+            const prev = (currentIndex - 1 + slides.length) % slides.length;
+            goToSlide(prev);
+        }
+
+        // ============================================
+        // AUTO SLIDE
+        // ============================================
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(() => {
+                // Cek apakah ada audio yang diputar
+                const anyPlaying = Array.from(document.querySelectorAll('audio')).some(a => !a.paused);
+                if (!anyPlaying) {
+                    nextSlide();
+                }
+            }, 6000);
+        }
+
+        function resetAutoSlide() {
+            clearInterval(autoSlideInterval);
+            startAutoSlide();
+        }
+
+        startAutoSlide();
+
+        // Pause auto slide saat hover
+        document.getElementById('slider').addEventListener('mouseenter', () => {
+            clearInterval(autoSlideInterval);
+        });
+        document.getElementById('slider').addEventListener('mouseleave', startAutoSlide);
+
+        // ============================================
+        // KEYBOARD
+        // ============================================
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+            if (e.key === 'Escape') closeStory();
+        });
+
+        // ============================================
+        // SWIPE MOBILE
+        // ============================================
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.getElementById('slider').addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.getElementById('slider').addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 40) {
+                if (diff > 0) {
+                    nextSlide();
+                } else {
+                    prevSlide();
+                }
+            }
+        });
+
+        // ============================================
+        // MODAL
+        // ============================================
+        function showStory(index) {
+            const data = storyData[index];
+            document.getElementById('modalTitle').textContent = data.title;
+            document.getElementById('modalText').textContent = data.text;
+            document.getElementById('storyModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeStory() {
+            document.getElementById('storyModal').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('storyModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('storyModal')) {
+                closeStory();
+            }
+        });
+
+        // ============================================
+        // PARTICLES
+        // ============================================
+        function createParticles() {
+            const container = document.getElementById('particles-container');
+            const symbols = ['✦', '❄', '·', '⋆', '✧'];
+
+            for (let i = 0; i < 40; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                p.style.left = Math.random() * 100 + '%';
+                p.style.fontSize = (Math.random() * 8 + 4) + 'px';
+                p.style.animationDuration = (Math.random() * 15 + 8) + 's';
+                p.style.animationDelay = (Math.random() * 15) + 's';
+                container.appendChild(p);
+            }
+        }
+        createParticles();
+
+        // ============================================
+        // AUDIO MANAGER
+        // ============================================
+        document.querySelectorAll('audio').forEach(audio => {
+            audio.addEventListener('play', () => {
+                document.querySelectorAll('audio').forEach(a => {
+                    if (a !== audio) a.pause();
+                });
+            });
+        });
+
+        console.log('✨ Memories in Motion 🎄');
+        console.log('Made with ❤️');
+    </script>
+
+</body>
+</html>
